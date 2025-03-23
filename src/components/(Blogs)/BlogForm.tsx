@@ -60,7 +60,7 @@ const BlogForm = ({ initialData, onSubmit, isPending }: BlogFormProps) => {
   return (
     <div className="p-6 max-w-4xl mx-auto min-h-screen">
       {/* Blog Image Upload */}
-      <div className="relative w-full h-64 sm:h-80 rounded-lg overflow-hidden shadow-md mb-6">
+      {/* <div className="relative w-full h-64 sm:h-80 rounded-lg overflow-hidden shadow-md mb-6">
         <Image
           src={newImage || initialData?.blogImage || STATIC_BLOG_IMAGE}
           alt="Blog Image"
@@ -68,10 +68,10 @@ const BlogForm = ({ initialData, onSubmit, isPending }: BlogFormProps) => {
           objectFit="cover"
           className="rounded-lg"
         />
-      </div>
+      </div> */}
 
       {/* Image Upload Button */}
-      <button className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 mb-5">
+      {/* <button className="bg-blue-600 text-white p-2 rounded-lg hover:bg-blue-800 mb-5">
         <FileUpload
           mode="basic"
           name="demo[]"
@@ -79,7 +79,7 @@ const BlogForm = ({ initialData, onSubmit, isPending }: BlogFormProps) => {
           maxFileSize={1000000}
           onUpload={handleImageUpload}
         />
-      </button>
+      </button> */}
 
       {/* Form */}
       <form

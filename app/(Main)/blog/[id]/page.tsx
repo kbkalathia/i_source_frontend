@@ -1,16 +1,16 @@
 "use client";
 import { useParams, useRouter } from "next/navigation";
 import Image from "next/image";
-import useFetchBlogDetails from "@/src/hooks/useFetchBlogDetails";
 import Loader from "@/src/components/Loader";
 import { useErrorBoundary } from "react-error-boundary";
 import { formatedDate } from "@/src/utils/helpers";
 import { STATIC_AUTHOR_IMAGE } from "@/src/utils/constants";
+import CommentsSection from "@/src/components/(Comments)/CommentsSection";
+import { useFetchBlogDetails } from "@/src/hooks/useBlogs.hooks";
 
 const BlogDetails = () => {
   const { showBoundary } = useErrorBoundary();
   const { id } = useParams();
-
   const router = useRouter();
 
   const {
@@ -19,13 +19,8 @@ const BlogDetails = () => {
     error,
   } = useFetchBlogDetails(String(id));
 
-  if (isLoading) {
-    return <Loader />;
-  }
-
-  if (error) {
-    showBoundary(error);
-  }
+  if (isLoading) return <Loader />;
+  if (error) showBoundary(error);
 
   if (!blogDetails) {
     return (
@@ -45,24 +40,20 @@ const BlogDetails = () => {
     <div className="p-6 max-w-4xl mx-auto min-h-screen">
       {/* Back Button */}
       <div className="flex justify-between">
-        <div>
-          <button
-            onClick={() => router.back()}
-            className="text-blue-600 hover:underline mb-4 cursor-pointer"
-          >
-            ← Back to Blogs
-          </button>
-        </div>
-        {/* Edit & Delete Button */}
-        <div>
-          <button
-            onClick={() => router.push(`/blog/${id}/edit`)}
-            className="text-blue-600 hover:underline mb-4 cursor-pointer"
-          >
-            Edit
-          </button>
-        </div>
+        <button
+          onClick={() => router.back()}
+          className="text-blue-600 hover:underline mb-4 cursor-pointer"
+        >
+          ← Back to Blogs
+        </button>
+        <button
+          onClick={() => router.push(`/blog/${id}/edit`)}
+          className="text-blue-600 hover:underline mb-4 cursor-pointer"
+        >
+          Edit
+        </button>
       </div>
+
       {/* Blog Header */}
       <div className="relative w-full h-64 sm:h-80 rounded-lg overflow-hidden shadow-md">
         <Image
@@ -72,10 +63,12 @@ const BlogDetails = () => {
           objectFit="cover"
         />
       </div>
+
       {/* Blog Title */}
       <h1 className="text-2xl sm:text-4xl font-bold mt-4">
         {blogDetails.title}
       </h1>
+
       {/* Author Info */}
       <div className="flex items-center gap-3 mt-4">
         <Image
@@ -94,11 +87,15 @@ const BlogDetails = () => {
           </p>
         </div>
       </div>
+
       {/* Blog Content */}
       <div className="mt-6 text-gray-800 leading-7 text-md sm:text-lg">
         <p className="text-white">{blogDetails.short_description}</p>
         <p className="mt-4 text-white">{blogDetails.description}</p>
       </div>
+
+      {/* Comments Section */}
+      <CommentsSection />
     </div>
   );
 };

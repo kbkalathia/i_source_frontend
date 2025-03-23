@@ -1,3 +1,5 @@
+export const MAX_COMMENT_LENGTH = 300;
+
 export const ITEMS_PER_PAGE = 10;
 
 export const STATIC_AUTHOR_IMAGE =

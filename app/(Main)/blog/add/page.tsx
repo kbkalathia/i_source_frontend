@@ -1,9 +1,9 @@
 "use client";
 import { useRouter } from "next/navigation";
-import useAddBlog from "@/src/hooks/useAddBlog";
 import { BlogPost } from "@/src/types/blogs.types";
-import BlogForm from "@/src/components/BlogForm";
+import BlogForm from "@/src/components/(Blogs)/BlogForm";
 import toast from "react-hot-toast";
+import { useAddBlog } from "@/src/hooks/useBlogs.hooks";
 
 const AddBlog = () => {
   const router = useRouter();

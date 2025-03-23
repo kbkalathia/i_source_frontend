@@ -2,11 +2,11 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { BlogPost } from "../types/blogs.types";
-import { formatedDate } from "../utils/helpers";
-import useDeleteBlog from "../hooks/useDeleteBlog";
-import { STATIC_AUTHOR_IMAGE, STATIC_BLOG_IMAGE } from "../utils/constants";
 import toast from "react-hot-toast";
+import { useDeleteBlog } from "@/src/hooks/useBlogs.hooks";
+import { BlogPost } from "@/src/types/blogs.types";
+import { STATIC_BLOG_IMAGE, STATIC_AUTHOR_IMAGE } from "@/src/utils/constants";
+import { formatedDate } from "@/src/utils/helpers";
 
 const BlogCard = ({ id, title, description, author, createdAt }: BlogPost) => {
   const router = useRouter();
