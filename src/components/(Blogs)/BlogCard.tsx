@@ -2,7 +2,6 @@
 import React from "react";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import toast from "react-hot-toast";
 import { useDeleteBlog } from "@/src/hooks/useBlogs.hooks";
 import { BlogPost } from "@/src/types/blogs.types";
 import { STATIC_BLOG_IMAGE, STATIC_AUTHOR_IMAGE } from "@/src/utils/constants";
@@ -21,7 +20,6 @@ const BlogCard = ({ id, title, description, author, createdAt }: BlogPost) => {
   const handleDeleteClick = (e: React.MouseEvent<HTMLButtonElement>) => {
     e.stopPropagation();
     deleteBlog(Number(id));
-    toast.success("Blog deleted successfully");
   };
 
   return (

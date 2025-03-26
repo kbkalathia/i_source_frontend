@@ -2,8 +2,7 @@
 import { useParams, useRouter } from "next/navigation";
 import { useErrorBoundary } from "react-error-boundary";
 import BlogForm from "@/src/components/(Blogs)/BlogForm";
-import { BlogPost } from "@/src/types/blogs.types";
-import toast from "react-hot-toast";
+import { BlogPost, BlogPayload } from "@/src/types/blogs.types";
 import { useEditBlog, useFetchBlogDetails } from "@/src/hooks/useBlogs.hooks";
 import Loader from "@/src/components/Loader";
 
@@ -12,19 +11,23 @@ const EditBlog = () => {
   const router = useRouter();
   const { showBoundary } = useErrorBoundary();
 
-  const { data: blog, isLoading, error } = useFetchBlogDetails(String(id));
+  const {
+    data: blogDetailsResponse,
+    isLoading,
+    error,
+  } = useFetchBlogDetails(String(id));
   const { mutate: editBlog, isPending } = useEditBlog();
 
+  const blog = blogDetailsResponse?.data;
+
   const handleEditBlog = (data: BlogPost) => {
-    editBlog(
-      { id: String(id), updatedData: data },
-      {
-        onSuccess: () => {
-          toast.success("Blog updated successfully!");
-          router.push("/blogs");
-        },
-      }
-    );
+    const payload: BlogPayload = { id: String(id), updatedData: data };
+
+    editBlog(payload, {
+      onSuccess: () => {
+        router.push("/blogs");
+      },
+    });
   };
 
   if (isLoading) return <Loader />;

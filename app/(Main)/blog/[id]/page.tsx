@@ -14,13 +14,15 @@ const BlogDetails = () => {
   const router = useRouter();
 
   const {
-    data: blogDetails,
+    data: blogDetailsResponse,
     isLoading,
     error,
   } = useFetchBlogDetails(String(id));
 
   if (isLoading) return <Loader />;
   if (error) showBoundary(error);
+
+  const blogDetails = blogDetailsResponse?.data || {};
 
   if (!blogDetails) {
     return (

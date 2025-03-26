@@ -3,14 +3,12 @@ import toast from "react-hot-toast";
 import { formatedDate } from "@/src/utils/helpers";
 import { MAX_COMMENT_LENGTH } from "@/src/utils/constants";
 import { Comments } from "@/src/types/comments.types";
+import { useDeleteComment, useEditComment } from "@/src/hooks/useComments.hook";
 
-const CommentList = ({
-  blogId,
-  comments,
-  deleteCommentOfBlog,
-  editCommentOfBlog,
-  refetch,
-}: any) => {
+const CommentList = ({ blogId, comments, refetch }: any) => {
+  const { mutate: deleteCommentOfBlog } = useDeleteComment();
+  const { mutate: editCommentOfBlog } = useEditComment();
+
   const [editCommentId, setEditCommentId] = useState<number | null>(null);
   const [editText, setEditText] = useState("");
   const [error, setError] = useState<string | null>(null);

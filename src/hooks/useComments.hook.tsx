@@ -11,6 +11,7 @@ import {
   useQueryClient,
   useSuspenseQuery,
 } from "@tanstack/react-query";
+import { CommentPayload } from "../types/comments.types";
 
 export function useFetchCommentsForBlog(blogId: number) {
   return useSuspenseQuery({
@@ -30,8 +31,7 @@ export function useAddComment() {
   const queryClient = useQueryClient();
 
   return useMutation({
-    mutationFn: ({ blogId, comment }: { blogId: number; comment: string }) =>
-      addCommentForBlog(blogId, comment),
+    mutationFn: (payload: CommentPayload) => addCommentForBlog(payload),
 
     onSuccess: (_, { blogId }) => {
       queryClient.invalidateQueries({ queryKey: ["commentsList", blogId] });

@@ -6,22 +6,13 @@ import {
   fetchBlogs,
   getBlogDetails,
 } from "@/src/services/blogs.service";
-import {
-  useMutation,
-  useQuery,
-  useQueryClient,
-  useSuspenseQuery,
-} from "@tanstack/react-query";
+import { useMutation, useQuery, useQueryClient } from "@tanstack/react-query";
+import { BlogPost, BlogPayload } from "../types/blogs.types";
+import toast from "react-hot-toast";
 
-export function useFetchBlogs({
-  queryKey,
-  params = {},
-}: {
-  queryKey: string;
-  params?: Record<string, any>;
-}) {
-  return useSuspenseQuery({
-    queryKey: [queryKey, params],
+export function useFetchBlogs(params: Record<string, number | string> = {}) {
+  return useQuery({
+    queryKey: ["blogsList"],
     queryFn: () => fetchBlogs(params),
   });
 }
@@ -36,10 +27,13 @@ export function useFetchBlogDetails(id: string) {
 
 export function useAddBlog() {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: addBlog,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["blogs-list"] });
+    mutationFn: (payload: BlogPost) => addBlog(payload),
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["blogsList"] });
+
+      toast.success(data.message);
     },
     onError: (error) => {
       console.error("Failed to add blog:", error);
@@ -49,12 +43,17 @@ export function useAddBlog() {
 
 export function useEditBlog() {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: editBlog,
-    onSuccess: () => {
+    mutationFn: (payload: BlogPayload) => editBlog(payload),
+
+    onSuccess: (data) => {
       queryClient.invalidateQueries({ queryKey: ["blogDetails"] });
       queryClient.invalidateQueries({ queryKey: ["blogs"] });
+
+      toast.success(data.message);
     },
+
     onError: (error) => {
       console.error("Failed to update blog:", error);
     },
@@ -63,11 +62,15 @@ export function useEditBlog() {
 
 export function useDeleteBlog() {
   const queryClient = useQueryClient();
+
   return useMutation({
-    mutationFn: deleteBlog,
-    onSuccess: () => {
-      queryClient.invalidateQueries({ queryKey: ["blogs-list"] });
+    mutationFn: (id: number) => deleteBlog(id),
+
+    onSuccess: (data) => {
+      queryClient.invalidateQueries({ queryKey: ["blogsList"] });
+      toast.success(data.message);
     },
+
     onError: (error) => {
       console.error("Failed to delete blog:", error);
     },

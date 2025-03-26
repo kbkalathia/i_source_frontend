@@ -5,3 +5,8 @@ export interface Comments {
   createdAt: string;
   updatedAt: string;
 }
+
+export interface CommentPayload {
+  blogId: number;
+  content: string;
+}

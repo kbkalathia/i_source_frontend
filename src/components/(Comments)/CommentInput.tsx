@@ -1,10 +1,14 @@
 import { useState } from "react";
 import toast from "react-hot-toast";
 import { MAX_COMMENT_LENGTH } from "@/src/utils/constants";
+import { useAddComment } from "@/src/hooks/useComments.hook";
+import { CommentPayload } from "@/src/types/comments.types";
 
-const CommentInput = ({ blogId, addCommentForBlog, refetch }: any) => {
+const CommentInput = ({ blogId, refetch }: any) => {
   const [newComment, setNewComment] = useState("");
   const [error, setError] = useState<string | null>(null);
+
+  const { mutate: addCommentForBlog } = useAddComment();
 
   const validateComment = (comment: string) => {
     if (!comment.trim()) {
@@ -23,16 +27,18 @@ const CommentInput = ({ blogId, addCommentForBlog, refetch }: any) => {
     e.preventDefault();
     if (!validateComment(newComment)) return;
 
-    addCommentForBlog(
-      { blogId: Number(blogId), comment: newComment.trim() },
-      {
-        onSuccess: () => {
-          toast.success("Comment added successfully!");
-          setNewComment("");
-          refetch();
-        },
-      }
-    );
+    const payload: CommentPayload = {
+      blogId: Number(blogId),
+      content: newComment.trim(),
+    };
+
+    addCommentForBlog(payload, {
+      onSuccess: () => {
+        toast.success("Comment added successfully!");
+        setNewComment("");
+        refetch();
+      },
+    });
   };
 
   return (
